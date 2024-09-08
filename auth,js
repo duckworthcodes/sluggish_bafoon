@@ -1,0 +1,50 @@
+// auth.js
+document.addEventListener('DOMContentLoaded', function() {
+    const newVisitorView = document.getElementById('newVisitor');
+    const returningUserView = document.getElementById('returningUser');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+
+    // Check if user has visited before
+    const hasVisited = localStorage.getItem('hasVisited');
+
+    if (hasVisited) {
+        newVisitorView.style.display = 'none';
+        returningUserView.style.display = 'block';
+        loginBtn.classList.add('active');
+    } else {
+        newVisitorView.style.display = 'block';
+        returningUserView.style.display = 'none';
+        registerBtn.classList.add('active');
+    }
+
+    // Set hasVisited flag when register form is submitted
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        localStorage.setItem('hasVisited', 'true');
+        alert('Registration successful! Please log in.');
+        window.location.reload();
+    });
+
+    // Handle login form submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Here you would typically send a request to your server to authenticate the user
+        alert('Login successful!');
+    });
+
+    // Toggle between login and register views
+    loginBtn.addEventListener('click', function() {
+        newVisitorView.style.display = 'none';
+        returningUserView.style.display = 'block';
+        loginBtn.classList.add('active');
+        registerBtn.classList.remove('active');
+    });
+
+    registerBtn.addEventListener('click', function() {
+        newVisitorView.style.display = 'block';
+        returningUserView.style.display = 'none';
+        registerBtn.classList.add('active');
+        loginBtn.classList.remove('active');
+    });
+});

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="raaa.css">
+    <title>Login For StreamIt</title>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <p>StreamIt.</p>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="hi.html" class="link active">Home</a></li>
+                    <li><a href="StreamIt.html" class="link">Explore Site</a></li>
+                </ul>
+            </div>
+            <div class="nav-button">
+                <button class="btn white-btn" id="loginBtn" onclick="toggleForm('login')">Sign In</button>
+                <button class="btn" id="registerBtn" onclick="toggleForm('register')">Sign Up</button>
+            </div>
+            <div class="nav-menu-btn">
+                <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+            </div>
+        </nav>
+
+        <div class="form-box">
+            <div class="login-container" id="login">
+                <div class="top">
+                    <span>Don't have an account? <a href="#" onclick="toggleForm('register')">Sign Up</a></span>
+                    <header>Login</header>
+                </div>
+                <form id="login-form">
+                    <div class="input-box">
+                        <input type="text" class="input-field" placeholder="Email" id="login-identifier">
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input-field" placeholder="Password" id="login-password">
+                        <i class="bx bx-lock-alt"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" class="submit" value="Sign In">
+                    </div>
+                    <div class="two-col">
+                        <div class="one">
+                            <input type="checkbox" id="login-check">
+                            <label for="login-check"> Remember Me</label>
+                        </div>
+                        <div class="two">
+                            <label><a href="#">Forgot password?</a></label>
+                        </div>
+                    </div>
+                </form>
+                <button id="github-signin" class="btn github-btn"><i class='bx bxl-github'></i> Sign in with GitHub</button>
+                <button id="google-signin" class="btn google-btn"><i class='bx bxl-google'></i> Sign in with Google</button>
+            </div>
+
+            <div class="register-container" id="register">
+                <div class="top">
+                    <span>Have an account? <a href="#" onclick="toggleForm('login')">Login</a></span>
+                    <header>Sign Up</header>
+                </div>
+                <form id="register-form">
+                    <div class="two-forms">
+                        <div class="input-box">
+                            <input type="text" class="input-field" placeholder="Firstname" id="register-firstname">
+                            <i class="bx bx-user"></i>
+                        </div>
+                        <div class="input-box">
+                            <input type="text" class="input-field" placeholder="Lastname" id="register-lastname">
+                            <i class="bx bx-user"></i>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" class="input-field" placeholder="Email" id="register-identifier">
+                        <i class="bx bx-envelope"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input-field" placeholder="Password" id="register-password">
+                        <i class="bx bx-lock-alt"></i>
+                    </div>
+                    <button type="submit" class="register-button">Register</button>
+                    
+                    <div class="two-col">
+                        <div class="one">
+                            <input type="checkbox" id="register-check">
+                            <label for="register-check"> Remember Me</label>
+                        </div>
+                        <div class="two">
+                            <label><a href="#">Terms & conditions</a></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function myMenuFunction() {
+            var i = document.getElementById("navMenu");
+            if (i.className === "nav-menu") {
+                i.className += " responsive";
+            } else {
+                i.className = "nav-menu";
+            }
+        }
+
+        function toggleForm(formType) {
+            var loginForm = document.getElementById('login');
+            var registerForm = document.getElementById('register');
+            var loginBtn = document.getElementById('loginBtn');
+            var registerBtn = document.getElementById('registerBtn');
+
+            if (formType === 'login') {
+                loginForm.style.left = "4px";
+                registerForm.style.right = "-520px";
+                loginBtn.classList.add("white-btn");
+                registerBtn.classList.remove("white-btn");
+                loginForm.style.opacity = 1;
+                registerForm.style.opacity = 0;
+            } else {
+                loginForm.style.left = "-510px";
+                registerForm.style.right = "5px";
+                loginBtn.classList.remove("white-btn");
+                registerBtn.classList.add("white-btn");
+                loginForm.style.opacity = 0;
+                registerForm.style.opacity = 1;
+            }
+        }
+
+        window.onload = function () {
+            render();
+        };
+
+        function render() {
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+            recaptchaVerifier.render();
+        }
+
+        function phoneAuth() {
+            var number = document.getElementById('number').value;
+            firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
+                window.confirmationResult = confirmationResult;
+                coderesult = confirmationResult;
+                console.log(coderesult);
+                alert("Message sent");
+            }).catch(function (error) {
+                alert(error.message);
+            });
+        }
+
+        function codeverify() {
+            var code = document.getElementById('verificationCode').value;
+            coderesult.confirm(code).then(function (result) {
+                alert("Successfully registered");
+                var user = result.user;
+                console.log(user);
+            }).catch(function (error) {
+                alert(error.message);
+            });
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq5bSK2E53GfhLytCpF2c_tPragUAWpKc",
+            authDomain: "form-auth-b56ff.firebaseapp.com",
+            projectId: "form-auth-b56ff",
+            storageBucket: "form-auth-b56ff.appspot.com",
+            messagingSenderId: "778245173187",
+            appId: "1:778245173187:web:ead57214da96bfc6dad776"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        // GitHub sign-in button logic
+        const githubSigninBtn = document.getElementById('github-signin');
+        githubSigninBtn.addEventListener('click', () => {
+            const provider = new GithubAuthProvider();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    const user = result.user;
+                    alert("Logged in with GitHub successfully!");
+                    // Redirect to index.html
+                    window.location.href = 'StreamIt.html';
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert("Error: " + errorMessage);
+                });
+        });
+
+        // Google sign-in button logic
+        const googleSigninBtn = document.getElementById('google-signin');
+        googleSigninBtn.addEventListener('click', () => {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    const user = result.user;
+                    alert("Logged in with Google successfully!");
+                    // Redirect to index.html
+                    window.location.href = 'StreamIt.html';
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert("Error: " + errorMessage);
+                });
+        });
+
+        // Registration form submission
+        const registerForm = document.getElementById('register-form');
+        registerForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const identifier = document.getElementById('register-identifier').value;
+            const password = document.getElementById('register-password').value;
+
+            createUserWithEmailAndPassword(auth, identifier, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert("Account created successfully!");
+                    // Log the user in immediately after registration
+                    return signInWithEmailAndPassword(auth, identifier, password);
+                })
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert("Logged in successfully!");
+                    // Redirect to index.html
+                    window.location.href = 'StreamIt.html';
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert("Error: " + errorMessage);
+                });
+        });
+
+        // Login form submission
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const identifier = document.getElementById('login-identifier').value;
+            const password = document.getElementById('login-password').value;
+
+            signInWithEmailAndPassword(auth, identifier, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert("Logged in successfully!");
+                    // Redirect to index.html
+                    window.location.href = 'StreamIt.html';
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert("Error: " + errorMessage);
+                });
+        });
+    </script>
+</body>
+</html>

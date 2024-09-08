@@ -1,0 +1,19 @@
+/* Light mode styles */
+body {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.header {
+    background: #fff;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background: #1c1c1c;
+    color: #e0e0e0;
+}
+
+body.dark-mode .header {
+    background: #333;
+}
